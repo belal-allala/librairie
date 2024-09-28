@@ -12,7 +12,8 @@ int main() {
     int nblivres = 0;
     int existe = 0;
     int verifi=0;
-    int i;
+    int revenu;
+    int i, nq;
     float prix[max_livres];
     int choix;
     debut:
@@ -38,10 +39,9 @@ int main() {
         case 1:
             printf("entrer les info de livre:\n");
             printf("titre : ");
-            scanf("%s", titre[nblivres]);
+            fgets(titre[nblivres],max_livres,stdin);
             printf("auteur : ");
-            scanf("%s", auteur[nblivres]);
-            getchar();
+            fgets(auteur[nblivres],max_livres,stdin);
             do {
                 printf("quantitie : ");
                 verifi = scanf("%d", &quantite[nblivres]);
@@ -68,7 +68,7 @@ int main() {
             break;
         case 3:
             printf("titre a rechercher : ");
-            scanf("%s", recherche);
+            fgets(recherche,max_livres,stdin);
             for (int i = 0; i < nblivres; i++) {
                 if (strcmp(titre[i] , recherche)==0) {
                     printf("livre trouve:\n");
@@ -81,20 +81,19 @@ int main() {
             }
             break;
         case 4:
-            int nq;
             printf("titre du livre a modifier : ");
-            scanf("%s", recherche);
+            fgets( recherche,max_livres,stdin);
             for (int i = 0; i < nblivres; i++) {
                 if (strcmp(titre[i] , recherche)==0) {
                     do{
-                    printf("nouvelle quantite :");
-                    fgets(ligne,100,stdin);
-                    if (sscanf(ligne,"%d", &nq) != 1) {
-                    printf("nouvelle quantite invalide. Entrez un nombre entier positif.\n");
-                    verifi=0;
-                    } else {
-                    verifi = 1;
-                    }
+                        printf("nouvelle quantite :");
+                        fgets(ligne,100,stdin);
+                        if (sscanf(ligne,"%d", &nq) != 1) {
+                            printf("nouvelle quantite invalide. Entrez un nombre entier positif.\n");
+                            verifi=0;
+                        } else {
+                            verifi = 1;
+                        }
                     } while (verifi == 0);
                     quantite[i] = nq;
                     printf("quantite mise a jour avec succes.\n");
@@ -108,7 +107,7 @@ int main() {
             break;
         case 5:    
             printf("titre du livre a supprimer : ");
-            scanf("%s",&recherche);
+            fgets(recherche,max_livres,stdin);
             for (int i = 0; i < nblivres; i++) {
                 if (strcmp(titre[i], recherche) == 0)  {
                     for (int j = i; j < nblivres - 1; j++) {
@@ -140,7 +139,6 @@ int main() {
                 goto debut;
     }
     fine:
-    int revenu;
     printf("choisir 0 ou 1 pour quitter ou bien revenir au menu pricipal \n");
     printf("0. quitter le programme\n");
     printf("1. revenir au menu principal\n");
