@@ -1,14 +1,18 @@
 #include <stdio.h>
-#include <string.h>
-#define max_livres 100
+#include <string.h> 
+#define max_livres 1000
 
 int main() {
     char titre[max_livres][max_livres];
     char auteur[max_livres][max_livres];
     char recherche[100];
+    char ligne[100];
     int quantite[max_livres];
+    int somme = 0;
     int nblivres = 0;
     int existe = 0;
+    int verifi=0;
+    int i;
     float prix[max_livres];
     int choix;
     debut:
@@ -20,7 +24,16 @@ int main() {
     printf("5. Supprimer un livre du stock.\n");
     printf("6. Afficher le nombre total de livres en stock.\n");
     printf("0. Quitter\n");
-    scanf("%d", &choix);
+    do{
+        printf("choix: ");
+        fgets(ligne,100,stdin);
+        if (sscanf(ligne,"%d", &choix) != 1){
+            printf("le choix invalide.\n");
+            verifi=0;
+        } else {
+            verifi = 1;
+        }
+        } while (verifi == 0);
     switch (choix) {
         case 1:
             printf("entrer les info de livre:\n");
@@ -28,12 +41,25 @@ int main() {
             scanf("%s", titre[nblivres]);
             printf("auteur : ");
             scanf("%s", auteur[nblivres]);
-            printf("quantite : ");
-            scanf("%d", &quantite[nblivres]);
-            printf("prix : ");
-            scanf("%f", &prix[nblivres]);
-                nblivres++;
-                break;
+            getchar();
+            do {
+                printf("quantitie : ");
+                verifi = scanf("%d", &quantite[nblivres]);
+                if (verifi != 1 || quantite[nblivres] < 0){
+                    printf("Quantite invalide. Entrez un nombre entier positif.\n");
+                while (getchar() != '\n');
+                        }
+                } while (verifi != 1 || quantite[nblivres] < 0);
+            do {
+                printf("prix : ");
+                verifi = scanf("%f", &prix[nblivres]);
+                if (verifi != 1 || prix[nblivres] < 0){
+                    printf("prix invalide. Entrez un nombre entier positif.\n");
+                while (getchar() != '\n');
+                        }
+                } while (verifi != 1 || prix[nblivres] < 0);
+            nblivres++;
+            break;
         case 2:
             for (int i = 0; i < nblivres; i++) {
                 printf("les livres disponibles sont :\n");
@@ -60,8 +86,16 @@ int main() {
             scanf("%s", recherche);
             for (int i = 0; i < nblivres; i++) {
                 if (strcmp(titre[i] , recherche)==0) {
-                    printf("nouvelle quantite : ");
-                    scanf("%d", &nq);
+                    do{
+                    printf("nouvelle quantite :");
+                    fgets(ligne,100,stdin);
+                    if (sscanf(ligne,"%d", &nq) != 1) {
+                    printf("nouvelle quantite invalide. Entrez un nombre entier positif.\n");
+                    verifi=0;
+                    } else {
+                    verifi = 1;
+                    }
+                    } while (verifi == 0);
                     quantite[i] = nq;
                     printf("quantite mise a jour avec succes.\n");
                     existe = 1;
@@ -74,13 +108,14 @@ int main() {
             break;
         case 5:    
             printf("titre du livre a supprimer : ");
-            scanf("%s", recherche);
+            scanf("%s",&recherche);
             for (int i = 0; i < nblivres; i++) {
                 if (strcmp(titre[i], recherche) == 0)  {
                     for (int j = i; j < nblivres - 1; j++) {
                         strcpy(titre[j], titre[j+1]);
                         strcpy(auteur[j],auteur[j+1]);
                         quantite[j] = quantite[j+1];
+                        prix[j]=prix[j+1];
                     }
                     nblivres--;
                     printf("livre supprime avec succes.\n");
@@ -93,8 +128,11 @@ int main() {
             }
             break;
         case 6:
-            printf("le nombre total des livres est : %d\n", nblivres);
-                break;
+            for( i = 0; i < nblivres; i++);{
+                somme = somme + quantite[i];
+            }
+            printf("le nombre total des livres est : %d\n", somme);
+            break;
         case 0:
             goto final;
         default:
